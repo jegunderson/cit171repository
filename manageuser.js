@@ -2,11 +2,12 @@
 
 let userName = "";
 let password = "";
+let phoneNumber = "";
 let verifypassword = "";
 let passwordRegEx=/((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!]).{6,40})/;
 
-function setusername(){
-    userName = $("#username").val();
+function setphonenumber(){
+    phoneNumber = $("#phonenumber").val();
 }
 
 function setuserpassword(){
@@ -46,12 +47,22 @@ function checkexpiredtoken(token){
     }
 }
 
+function sendtext(){
+    setphonenumber();
+    $.ajax({
+        type:'Post',
+        url: 'https://dev.stedi.me/twofactorlogin/'+phoneNumber,
+        contentType: 'application/tedxt',
+        dataType: 'text',
+    })
+}
+
 function userlogin(){
     setuserpassword();
-    setusername();
+    
     $.ajax({
         type: 'POST',
-        url: '/login',
+        url: 'https://dev.stedi.me/login',
         data: JSON.stringify({userName, password}),
         success: function(data) {
             window.location.href = "/timer.html#"+data;//add the token to the url
